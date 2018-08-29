@@ -70,7 +70,7 @@ class webserverHandler(BaseHTTPRequestHandler):
 				
 				output = ""
 				output += "<html><body>"
-				output += "<form method='POST' enctype='multipart/form-data' action='/restaurants'>"
+				output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/new'>"
 				output += "<h2>Enter new restaurant name</h2><input name='restaurant' type='text'>"
 				output += "<input type='submit' value='Create'></form>"
 				
@@ -88,29 +88,25 @@ class webserverHandler(BaseHTTPRequestHandler):
 		try:
 				
 			if self.path.endswith("/restaurants/new"):
-				self.send_response(301)
-				self.end_headers()
-				
+			
 				ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
 				if ctype == 'multipart/form-data':
 					fields = cgi.parse_multipart(self.rfile, pdict)
 					restaurant_name = fields.get('restaurant')
 					
-					restaurant = Restaurant(name = restaurant_name)
+					restaurant = Restaurant(name = restaurant_name[0])					
 					session.add(restaurant)
 					session.commit()
+					
+					self.send_response(301)
+					self.send_header('Content-type', 'text/html')
+					self.send_header('Location', '/restaurants')
+					self.end_headers()
+			
+					return	
+					
 				
-				output = ""
-				output += "<html><body>"
-				output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/new'>"
-				output += "<h2>Enter new restaurant name</h2><input name='restaurant' type='text'>"
-				output += "<input type='submit' value='Create'></form>"
-				
-				output += "</body></html>"
-				
-				return
-		
-			self.send_response(301)
+			"""self.send_response(301)
 			self.end_headers()
 			
 			ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
@@ -127,7 +123,7 @@ class webserverHandler(BaseHTTPRequestHandler):
 			output += "<input type='submit' value='Submit'></form></body></html>"
 			
 			self.wfile.write(output)
-			print output
+			print output"""
 			
 		except:
 			pass
