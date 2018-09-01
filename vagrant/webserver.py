@@ -54,15 +54,15 @@ class webserverHandler(BaseHTTPRequestHandler):
 				output += "<html><body><a href='/restaurants/new'>Make new restaurant</a>"
 				
 				for rest in session.query(Restaurant).order_by(Restaurant.name):
-					output += "<h4> %s <a href='#'>Edit</a><span> </span><a href='#'>Delete</a><br/></h4>" % rest.name
+					output += "<h4> %s <a href='/restaurants/%d/edit'>Edit</a><span> </span><a href='/restaurants/%d/delete'>Delete</a><br/></h4>" % (rest.name, rest.id, rest.id)
 				
 
 				output += "</body></html>"
 				self.wfile.write(output)
 				print output
 				
-				return
-				
+				return							
+			
 			if self.path.endswith("/restaurants/new"):
 				self.send_response(200)
 				self.send_header('Content-type', 'text/html')
@@ -79,7 +79,46 @@ class webserverHandler(BaseHTTPRequestHandler):
 				print output
 				
 				return
-			
+				
+			if self.path.endswith("/edit") and  "/restaurants/" in self.path:
+				self.send_response(200)
+				self.send_header('Content-type', 'text/html')
+				self.end_headers()
+				
+				rest_id = self.path.split("/")[-2]								
+				rest = session.query(Restaurant).filter_by(id = rest_id).one()
+				
+				output = ""
+				output += "<html><body>"
+				output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%d/edit'>" % rest.id
+				output += "<h2>%s</h2><input name='restaurant' type='text'>" % rest.name
+				output += "<input type='submit' value='Rename'></form>"
+				
+				output += "</body></html>"
+				self.wfile.write(output)
+				print output
+				
+				return
+				
+			if self.path.endswith("/delete") and  "/restaurants/" in self.path:
+				self.send_response(200)
+				self.send_header('Content-type', 'text/html')
+				self.end_headers()
+				
+				rest_id = self.path.split("/")[-2]								
+				rest = session.query(Restaurant).filter_by(id = rest_id).one()
+				
+				output = ""
+				output += "<html><body>"
+				output += "<form method='POST' enctype='multipart/form-data' action='/restaurants/%d/delete'>" % rest.id
+				output += "<h2>Are you sure you want to delete %s?</h2>" % rest.name
+				output += "<input type='submit' value='Delete'></form>"
+				
+				output += "</body></html>"
+				self.wfile.write(output)
+				print output
+				
+				return
 				
 		except IOError:
 			self.send_error(404, "File Not Found %s" % self.path)
@@ -104,7 +143,40 @@ class webserverHandler(BaseHTTPRequestHandler):
 					self.end_headers()
 			
 					return	
+			
+			if self.path.endswith("/edit") and  "/restaurants/" in self.path:		
+				
+				ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+				if ctype == 'multipart/form-data':
+					fields = cgi.parse_multipart(self.rfile, pdict)
+					restaurant_name = fields.get('restaurant')[0]
+				
+					rest_id = self.path.split("/")[-2]					
+					rest = session.query(Restaurant).filter_by(id = rest_id).one()
+					rest.name = restaurant_name
+					session.add(rest)
+					session.commit()
 					
+					self.send_response(301)
+					self.send_header('Content-type', 'text/html')
+					self.send_header('Location', '/restaurants')
+					self.end_headers()
+			
+					return	
+					
+			if self.path.endswith("/delete") and  "/restaurants/" in self.path:		
+
+				rest_id = self.path.split("/")[-2]					
+				rest = session.query(Restaurant).filter_by(id = rest_id).one()					
+				session.delete(rest)
+				session.commit()
+				
+				self.send_response(301)
+				self.send_header('Content-type', 'text/html')
+				self.send_header('Location', '/restaurants')
+				self.end_headers()
+		
+				return	
 				
 			"""self.send_response(301)
 			self.end_headers()
