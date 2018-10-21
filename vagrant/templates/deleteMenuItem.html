@@ -1,0 +1,7 @@
+<html><body>
+<form method='POST' enctype='multipart/form-data'>
+<h2>Are you sure you want to delete {{ i.name }}?</h2>
+<br/><input type='submit' value='Delete'>
+<a href="{{ url_for('restaurantMenu', restaurant_id = i.restaurant_id) }}">Cancel<a/>
+</form>
+</body></html>
