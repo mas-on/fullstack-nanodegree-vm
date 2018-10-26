@@ -1,11 +1,11 @@
 <html><body>
-<form method='POST' enctype='multipart/form-data'>
+<form method='POST' enctype='multipart/form-data' action="{{ url_for('editMenuItem', restaurant_id = i.restaurant_id, menu_id = i.id) }}">
 <h2>{{ caption }}</h2>
 <h3>Enter name</h3><input name='name' type='text' placeholder=' {{ i.name }}'>
 <h3>Enter price</h3><input name='price' type='text' placeholder=' {{ i.price }}'>
 <h3>Enter description</h3><input name='description' type='text' placeholder=' {{ i.description }}'>
 <br/><input type='submit' value='Save'/>
 <span> </span>
-<a href="{{ url_for('restaurantMenu', restaurant_id = i.restaurant_id) }}">Cancel<a/>
+<a href="{{ url_for('showMenu', restaurant_id = i.restaurant_id) }}">Cancel<a/>
 </form>
 </body></html>

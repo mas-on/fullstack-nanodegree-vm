@@ -20,6 +20,7 @@
 	{% endwith %}
 	</div>
 	<a href="{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}">New menu item</a>
+	<a href="{{ url_for('showRestaurants') }}">All restaurants</a>
 
 {% for i in items %}
 
