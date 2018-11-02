@@ -1,9 +1,9 @@
 <html><body>
-<form method='POST' enctype='multipart/form-data'>
+<form method='POST' enctype='multipart/form-data' action="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}">
 <h2>Edit Restaurant {{ restaurant.name }}</h2>
 <h3>Enter new name</h3><input name='name' type='text' placeholder='{{ restaurant.name }}'>
 <br/><input type='submit' value='Save'/>
 <span> </span>
-<a href="#">Cancel<a/>
+<a href="{{ url_for('showRestaurants') }}">Cancel<a/>
 </form>
 </body></html>
