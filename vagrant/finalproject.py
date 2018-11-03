@@ -113,6 +113,24 @@ def deleteMenuItem(restaurant_id, menu_id):
     else:
         return render_template('deleteMenuItem.html', i = item)
 
+### API endpoints
+@app.route('/restaurants/json')
+def RestaurantsJson():
+	items = session.query(Restaurant).order_by(Restaurant.id)	
+	return jsonify(Restaurants = [i.serialize for i in items])
+
+
+@app.route('/restaurant/<int:restaurant_id>/menu/json')
+def RestaurantMenuJson(restaurant_id):	
+	items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
+	return jsonify(MenuItems = [i.serialize for i in items])
+
+
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/json')
+def RestaurantMenuItemJson(restaurant_id, menu_id):	
+	item = session.query(MenuItem).filter_by(id = menu_id).one()
+	return jsonify(MenuItem = item.serialize)
+
 
 ### help methods
 def msgIfEmpty(items):
@@ -121,6 +139,7 @@ def msgIfEmpty(items):
 
 def getCourses():
         return ('Appetizer','Entree','Dessert','Beverage')
+
 
 if __name__ == "__main__":
     	app.secret_key = 'super_secret_key'
