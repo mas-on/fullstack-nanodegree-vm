@@ -1,9 +1,16 @@
-<html><body>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"/>
+</head>
+<body>
 <form method="POST" enctype="multipart/form-data" action="{{ url_for('newRestaurant') }}">
-<h2>New Restaurant</h2>
-<h3>Enter name</h3><input name='name' type='text' >
-<br/><input type='submit' value='Add'/>
-<span> </span>
-<a href="{{ url_for('showRestaurants') }}">Cancel<a/>
+	<div class='pane'>
+		<div class='header'><h2>New Restaurant</h2></div>
+		<p class='label'>Enter name</p><input name='name' type='text' >
+		<br/>
+		<input type='submit' value='Add'/>
+		<span> </span>
+		<a href="{{ url_for('showRestaurants') }}">Cancel<a/>
+	</div>
 </form>
 </body></html>

@@ -1,13 +1,14 @@
 body {
     font-family: sans-serif;
-    background-color: #333333
+    background-color: #333333;
+	background-image: url("background.jpg");
 }
 
 h1,
 h2,
 h3,
 h4 {
-    color: #ffffff;
+    color: #CCCCCC;
 }
 
 h1,
@@ -24,9 +25,7 @@ h2 {
     font-size: 1.2em;
 }
 
-p,
-dd,
-dt {
+p {
     color: #cccccc;
 }
 
@@ -44,7 +43,9 @@ a {
     padding: 5px;
     margin: 5px;
     border-color: #999999;
-    background-color: #333333
+    background-color: #333333;
+	min-width: 300px;
+	min-height: 600px;
 }
 
 .header {
@@ -56,6 +57,14 @@ a {
     width: 50%;
     display: inline-block;
     float: left;
+	color: #ffffcc !important;
+}
+
+.name-link {
+	display: inline-block;
+}
+
+.label {
 	color: #ffffcc !important;
 }
 

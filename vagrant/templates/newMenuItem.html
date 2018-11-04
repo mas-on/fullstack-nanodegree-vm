@@ -1,19 +1,25 @@
-<html><body>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}"/>
+</head>
+<body>
 <form method='POST' enctype='multipart/form-data' action="{{ url_for('newMenuItem', restaurant_id = restaurant_id) }}">
-<h2>New Menu Item</h2>
-<h3>Enter name</h3><input name='name' type='text' >
-<h3>Enter price</h3><input name='price' type='text' >
-<h3>Enter description</h3><input name='description' type='text' >
-<h3>Check course</h3>
-{% for course in courses %}
-<div>
-	<input type="radio" id="{{ course.lower() }}" name="course" value="{{ course }}" {% if course == 'Appetizer' %} checked {% endif %}/>	
-	<label for="{{ course.lower() }}">{{ course }}</label>	
-</div>
-{% endfor %}
+<div class='pane'>
+	<div class='header'><h2>New Menu Item</h2></div>
+	<p class='label'>Enter name</p><input name='name' type='text' >
+	<p class='label'>Enter price</p><input name='price' type='text' >
+	<p class='label'>Enter description</p><input name='description' type='text' >
+	<p class='label'>Check course</p>
+	{% for course in courses %}
+	<div>
+		<input type="radio" id="{{ course.lower() }}" name="course" value="{{ course }}" {% if course == 'Appetizer' %} checked {% endif %}/>	
+		<label class='label' for="{{ course.lower() }}">{{ course }}</label>	
+	</div>
+	{% endfor %}
 
-<br/><input type='submit' value='Add'/>
-<span> </span>
-<a href="{{ url_for('showMenu', restaurant_id = restaurant_id) }}">Cancel<a/>
+	<br/><input type='submit' value='Add'/>
+	<span> </span>
+	<a href="{{ url_for('showMenu', restaurant_id = restaurant_id) }}">Cancel<a/>
+</div>
 </form>
 </body></html>
